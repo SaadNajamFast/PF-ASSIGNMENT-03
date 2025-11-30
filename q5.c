@@ -5,7 +5,6 @@
 
 #define INITIAL_CAPACITY 4
 
-/* --- Read a line from stream --- */
 static char *read_line_stream(FILE *stream) {
     size_t cap = 128, len = 0;
     char *buf = malloc(cap);
@@ -26,7 +25,6 @@ static char *read_line_stream(FILE *stream) {
     if (!out) out = buf;
     return out;
 }
-/* --- Initialize lines array --- */
 void init_lines(char ***lines_ptr, int *size, int *capacity) {
     *capacity = INITIAL_CAPACITY;
     *size = 0;
@@ -34,7 +32,6 @@ void init_lines(char ***lines_ptr, int *size, int *capacity) {
     if (!*lines_ptr) error(1, 0, "malloc failed in init_lines");
 }
 
-/* --- Ensure capacity --- */
 void ensure_capacity(char ***lines_ptr, int *capacity, int required) {
     if (*capacity >= required) return;
     int newcap = *capacity;
@@ -44,7 +41,6 @@ void ensure_capacity(char ***lines_ptr, int *capacity, int required) {
     *lines_ptr = tmp;
     *capacity = newcap;
 }
-/* --- Insert line at index --- */
 void insertLine(char ***lines_ptr, int *size, int *capacity, int index, const char *text) {
     if (index < 0 || index > *size) {
         fprintf(stderr, "insertLine: invalid index %d (size=%d)\n", index, *size);
@@ -61,7 +57,6 @@ void insertLine(char ***lines_ptr, int *size, int *capacity, int index, const ch
     memcpy(lines[index], text, len + 1);
     (*size)++;
 }
-/* --- Delete line at index --- */
 void deleteLine(char ***lines_ptr, int *size, int index) {
     if (index < 0 || index >= *size) {
         fprintf(stderr, "deleteLine: invalid index %d (size=%d)\n", index, *size);
@@ -74,13 +69,12 @@ void deleteLine(char ***lines_ptr, int *size, int index) {
     }
     (*size)--;
 }
-/* --- Print all lines --- */
 void printAllLines(char **lines, int size) {
     for (int i = 0; i < size; ++i) {
         printf("%d: %s\n", i, lines[i]);
     }
 }
-/* --- Shrink to fit --- */
+
 void shrinkToFit(char ***lines_ptr, int *capacity, int size) {
     if (size == 0) {
         free(*lines_ptr);
@@ -207,4 +201,5 @@ int main(void) {
 
     if (lines) freeAll(&lines, &size, &capacity);
     return 0;
+
 }
